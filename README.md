@@ -14,7 +14,7 @@ Output: ```[("ELEMENTS PARSED CORRECTLY", "INVALID ELEMENTS")]```
 
 Given formula is correct if the second string in the tuple is empty, i.e. ```""```.
 
-#### Examples
+### Examples
 ```
 > parse "^"
 [("","^")]
@@ -48,7 +48,7 @@ Given formula is correct if the second string in the tuple is empty, i.e. ```""`
 comment: if numbers of opening and closing brackets are not equal, whole formula is treated as invalid.
 ```
 
-#### Known issues
+### Known issues
 For the example below the incorrect part should look like ```"=>"``` and instead it is ```")=>"```.
 ```
 > parse "-(x^-y)=>"

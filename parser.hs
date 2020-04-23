@@ -2,6 +2,7 @@ import Control.Monad
 import Data.Char
 import Data.List
 
+-- "~" - "-"
 -- "∧" - "^"
 -- "∨" - "|"
 -- "⇒" - "=>"
@@ -13,11 +14,11 @@ parse :: Parser Char
 parse [] = []
 parse x = initial [("", x)]
 
-initial [(a, (x:xs))] = do
-   let scan = bracketsScan [(a, (x:xs))]
-   if scan == True
-      then interp reqVal [(a, (x:xs))]
-      else [(a, (x:xs))]
+initial [(a, x)] = do
+   let scan = bracketsScan [(a, x)]
+   if scan
+      then interp reqVal [(a, x)]
+      else [(a, x)]
 
 interp f [(a, "")] = [(a, "")]
 interp f [(a, (x:xs))] = f [(a, (x:xs))]

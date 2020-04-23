@@ -1,12 +1,11 @@
 import Control.Monad
 import Data.Char
+import Data.List
 
 -- "∧" - "^"
 -- "∨" - "|"
 -- "⇒" - "=>"
 -- "⇔" - "<=>"
-
-brackets = 0
 
 type Parser a = String -> [(String, String)]
 
@@ -14,7 +13,11 @@ parse :: Parser Char
 parse [] = []
 parse x = initial [("", x)]
 
-initial [(a, (x:xs))] = interp reqVal [(a, (x:xs))]
+initial [(a, (x:xs))] = do
+   let scan = bracketsScan [(a, (x:xs))]
+   if scan == True
+      then interp reqVal [(a, (x:xs))]
+      else [(a, (x:xs))]
 
 interp f [(a, "")] = [(a, "")]
 interp f [(a, (x:xs))] = f [(a, (x:xs))]
@@ -23,11 +26,12 @@ interp f [(a, (x:xs))] = f [(a, (x:xs))]
 reqVal [(a, "")] = revert [(a, "")]  
 
 reqVal [(a, (x:xs))]
-   | ([x] == "-" || [x] == "(") && xs /= ""   = reqVal [(a ++ [x], xs)]
-   | ([x] == "-" || [x] == "(") && xs == ""   = revert [(a, [x] ++ xs)]
+   | [x] == "-" && xs /= ""   = reqVal [(a ++ [x], xs)]
+   | [x] == "-" && xs == ""   = revert [(a, [x] ++ xs)]
+   | [x] == "(" && xs /= ""   = reqVal [(a ++ [x], xs)]
+   | [x] == "(" && xs == ""   = revert [(a, [x] ++ xs)]
    | isLetter x == True                      = reqOp [(a ++ [x], xs)]
    | otherwise                               = revert [(a, [x] ++ xs)]
-   --else [(a, [x] ++ xs)]
 
 -- require operator
 reqOp [(a, "")] = [(a, "")]
@@ -55,6 +59,17 @@ reqIff [(a, (x:xs))] p =
 reqImp [(a, (x:xs))]
    | [x] == ">"   = reqVal [(a ++ [x], xs)]
    | otherwise    = revert [(a, (x:xs))]
+
+-- brackets counter
+bracketsScan [(a, x)] = do
+   let op = countChars x '('
+   let cl = countChars x ')'
+   if op /= cl
+      then False
+      else True
+
+countChars :: String -> Char -> Int
+countChars str c = length $ filter (== c) str
          
 -- go back to the last correct variable
 revert [("", x)] = [("", x)]

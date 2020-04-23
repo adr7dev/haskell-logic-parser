@@ -10,10 +10,11 @@ Use command ```parse "FORMULA"``` where FORMULA is a zeroth-order logic formula.
 - if and only if: ```<=>```
 - brackets: ```( )```
 
-Output: [("ELEMENTS PARSED CORRECTLY", "INVALID ELEMENTS")]
-Given formula is correct if the second string in the tuple is empty ```""```.
+Output: ```[("ELEMENTS PARSED CORRECTLY", "INVALID ELEMENTS")]```
 
-####Examples
+Given formula is correct if the second string in the tuple is empty, i.e. ```""```.
+
+#### Examples
 ```
 > parse "^"
 [("","^")]
@@ -47,7 +48,7 @@ Given formula is correct if the second string in the tuple is empty ```""```.
 comment: if numbers of opening and closing brackets are not equal, whole formula is treated as invalid.
 ```
 
-####Known issues
+#### Known issues
 For the example below the incorrect part should look like ```"=>"``` and instead it is ```")=>"```.
 ```
 > parse "-(x^-y)=>"

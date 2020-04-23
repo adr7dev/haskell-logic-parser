@@ -53,3 +53,6 @@ For the example below the incorrect part should look like ```"=>"``` and instead
 ```
 > parse "-(x^-y)=>"
 ```
+
+### Additional comments
+- There is no point to keep function ```interp``` in code, but it is still used in one place as a proxy for another function; currently I don't have time to check if a removal makes unexpected mess.

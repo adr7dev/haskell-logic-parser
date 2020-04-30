@@ -76,4 +76,5 @@ countChars str c = length $ filter (== c) str
 revert [("", x)] = [("", x)]
 revert [(a, x)]
    | isLetter (last a) == True   = [(a, x)]
+   | last a == ')'               = [(a, x)]
    | otherwise                   = revert [(init a, (last a) : x)]
